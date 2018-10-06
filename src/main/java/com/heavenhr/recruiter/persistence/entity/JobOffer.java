@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Builder
@@ -18,7 +18,7 @@ public class JobOffer extends AuditModel {
     @GeneratedValue
     private Long id;
     private String jobTitle;
-    private LocalDateTime startDate;
+    private LocalDate startDate;
     private Long totalApplication;
 
     @OneToMany(

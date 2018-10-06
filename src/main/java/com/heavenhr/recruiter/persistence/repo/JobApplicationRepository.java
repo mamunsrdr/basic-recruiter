@@ -1,7 +1,7 @@
 package com.heavenhr.recruiter.persistence.repo;
 
 import com.heavenhr.recruiter.persistence.entity.JobApplication;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JobApplicationRepository extends CrudRepository<JobApplication, Long> {
+public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
 }

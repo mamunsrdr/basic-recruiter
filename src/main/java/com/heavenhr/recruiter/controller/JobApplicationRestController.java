@@ -17,7 +17,7 @@ public class JobApplicationRestController {
     )
     @ApiOperation("Retrieve job application details by id")
     public void getJobApplication(@ApiParam("Job application id")
-                                  @PathVariable Long id) {
+                                  @PathVariable("id") Long id) {
 
     }
 
@@ -27,7 +27,7 @@ public class JobApplicationRestController {
     )
     @ApiOperation("Retrieve all job applications by job offer id")
     public void getAllJobApplicationByOffer(@ApiParam("Job offer id")
-                                            @PathVariable Long offerId) {
+                                            @PathVariable("offerId") Long offerId) {
 
     }
 
