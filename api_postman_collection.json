@@ -1,0 +1,360 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Basic recruiter REST API",
+		"_postman_id": "22a4fe86-5961-3cc0-55a3-a360f5c4996d",
+		"description": "Basic recruiter REST API documentations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "rest",
+			"description": "Folder for rest",
+			"item": [
+				{
+					"name": "JobOffer",
+					"description": "",
+					"item": [
+						{
+							"name": "Create job offer",
+							"request": {
+								"url": "http://localhost:8080/rest/v1/offer",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"jobTitle\": \"Senior java developer\",\r\n  \"startDate\": \"2018-11-27\"\r\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve all job offers",
+							"request": {
+								"url": "http://localhost:8080/rest/v1/offer/list",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve job offer details by id",
+							"request": {
+								"url": "http://localhost:8080/rest/v1/offer/1",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "JobApplication",
+					"description": "",
+					"item": [
+						{
+							"name": "Create job applications under a job offer",
+							"request": {
+								"url": "http://localhost:8080/rest/v1/application",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"candidateEmail\": \"someone@example.com\",\r\n  \"jobOfferId\": 1,\r\n  \"resumeText\": \"Resume text description...\"\r\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Count number of job applications by job offer id",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/rest/v1/application/countByOffer/:offerId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rest",
+										"v1",
+										"application",
+										"countByOffer",
+										":offerId"
+									],
+									"query": [],
+									"variable": [
+										{
+											"value": "{{offerId}}",
+											"id": "offerId"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve all job applications by job offer id",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/rest/v1/application/getAllByOffer/:offerId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rest",
+										"v1",
+										"application",
+										"getAllByOffer",
+										":offerId"
+									],
+									"query": [],
+									"variable": [
+										{
+											"value": "{{offerId}}",
+											"id": "offerId"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Update the progress of job application status",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/rest/v1/application/updateStatus/:applicationId/:applicationStatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rest",
+										"v1",
+										"application",
+										"updateStatus",
+										":applicationId",
+										":applicationStatus"
+									],
+									"query": [],
+									"variable": [
+										{
+											"value": "{{applicationId}}",
+											"id": "applicationId"
+										},
+										{
+											"value": "{{applicationStatus}}",
+											"id": "applicationStatus"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve job application details by id",
+							"request": {
+								"url": {
+									"raw": "http://localhost:8080/rest/v1/application/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rest",
+										"v1",
+										"application",
+										":id"
+									],
+									"query": [],
+									"variable": [
+										{
+											"value": "{{id}}",
+											"id": "id"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Accept-Language",
+										"value": "{{Accept-Language}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Welcome index message",
+			"request": {
+				"url": "http://localhost:8080/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/plain",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{Accept-Language}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Returns a simple locale message",
+			"request": {
+				"url": "http://localhost:8080/rest/v1/locale",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/plain",
+						"description": ""
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{Accept-Language}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
