@@ -4,10 +4,12 @@ import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import com.heavenhr.recruiter.persistence.repo.JobOfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class JobOfferServiceImpl implements JobOfferService {
 
     private final JobOfferRepository jobOfferRepository;
@@ -33,7 +35,7 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
-    public void saveJobOffer(JobOffer jobOffer) {
+    public void createJobOffer(JobOffer jobOffer) {
         this.jobOfferRepository.save(jobOffer);
     }
 }

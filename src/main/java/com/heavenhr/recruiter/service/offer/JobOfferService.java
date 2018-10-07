@@ -11,5 +11,5 @@ public interface JobOfferService {
 
     public boolean isTitleExists(String jobTitle);
 
-    public void saveJobOffer(JobOffer jobOffer);
+    public void createJobOffer(JobOffer jobOffer);
 }

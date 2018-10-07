@@ -1,4 +1,4 @@
-package com.heavenhr.recruiter.config;
+package com.heavenhr.recruiter.app.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

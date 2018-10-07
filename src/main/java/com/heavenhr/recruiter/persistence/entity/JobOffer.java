@@ -16,6 +16,7 @@ public class JobOffer extends AuditModel {
 
     @Id
     @GeneratedValue
+    @Access(AccessType.PROPERTY)
     private Long id;
     private String jobTitle;
     private LocalDate startDate;

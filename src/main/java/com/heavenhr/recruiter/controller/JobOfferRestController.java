@@ -7,7 +7,8 @@ import com.heavenhr.recruiter.service.offer.JobOfferService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class JobOfferRestController {
 
     private final JobOfferService jobOfferService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobOfferRestController.class);
 
     @Autowired
     public JobOfferRestController(JobOfferService jobOfferService) {
@@ -40,11 +42,12 @@ public class JobOfferRestController {
     public ResponseEntity<JobOfferDto> getJobOffer(@ApiParam("Job offer id")
                                                    @PathVariable("id") Long offerId) {
         JobOffer jobOffer = this.jobOfferService.getJobOfferById(offerId);
+
         //if no entity found with provided id
         if (jobOffer == null) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().body(convertJobOfferDto(jobOffer));
+            return ResponseEntity.ok().body(JobOfferDto.convert(jobOffer));
         }
     }
 
@@ -55,13 +58,14 @@ public class JobOfferRestController {
     @ApiOperation("Retrieve all job offers")
     public ResponseEntity<List<JobOfferDto>> getAllJobOffer() {
         List<JobOffer> jobOfferList = this.jobOfferService.getAllJobOffer();
+
         //if list is empty
         if (jobOfferList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(
                 jobOfferList.stream()
-                        .map(this::convertJobOfferDto)
+                        .map(JobOfferDto::convert)
                         .collect(Collectors.toList())
         );
     }
@@ -72,41 +76,21 @@ public class JobOfferRestController {
     )
     @ApiOperation("Create job offer")
     public ResponseEntity<Void> createJobOffer(@Valid @RequestBody JobOfferCommand jobOfferCommand, UriComponentsBuilder ucBuilder) {
-        JobOffer jobOffer = convertJobOfferEntity(jobOfferCommand);
+        LOGGER.debug("create offer: " + jobOfferCommand.toString());
+        JobOffer jobOffer = JobOfferCommand.convertToJobOfferEntity(jobOfferCommand);
+
         //title unique check
         if (this.jobOfferService.isTitleExists(jobOffer.getJobTitle())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+
         //save job offer
-        this.jobOfferService.saveJobOffer(jobOffer);
+        this.jobOfferService.createJobOffer(jobOffer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(jobOffer.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-
-    /**
-     * convert domain object to dto
-     *
-     * @param jobOffer {@link JobOffer}
-     * @return {@link JobOfferDto}
-     */
-    private JobOfferDto convertJobOfferDto(JobOffer jobOffer) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(jobOffer, JobOfferDto.class);
-    }
-
-
-    /**
-     * convert command object to entity
-     *
-     * @param jobOfferCommand {@link JobOfferCommand}
-     * @return {@link JobOffer}
-     */
-    private JobOffer convertJobOfferEntity(JobOfferCommand jobOfferCommand) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(jobOfferCommand, JobOffer.class);
-    }
 
 }
