@@ -1,8 +1,7 @@
 package com.heavenhr.recruiter.persistence.entity;
 
 import com.heavenhr.recruiter.app.type.ApplicationStatus;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,6 +10,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobApplication {
 
     @Id
