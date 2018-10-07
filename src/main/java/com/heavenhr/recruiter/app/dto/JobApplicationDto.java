@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ApiModel(value = "JobOfferDto")
+@ApiModel(value = "JobApplicationDto")
 public class JobApplicationDto {
 
     @ApiModelProperty(value = "id (unique)", dataType = "number", example = "1")

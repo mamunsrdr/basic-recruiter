@@ -37,12 +37,6 @@ public class JobOfferDto {
      */
     public static JobOfferDto convert(JobOffer jobOffer) {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<JobOfferDto, JobOffer>() {
-            @Override
-            protected void configure() {
-                skip().setJobApplications(null);
-            }
-        });
         return modelMapper.map(jobOffer, JobOfferDto.class);
     }
 }

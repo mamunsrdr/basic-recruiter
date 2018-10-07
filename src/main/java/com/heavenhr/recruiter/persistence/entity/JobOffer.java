@@ -1,6 +1,5 @@
 package com.heavenhr.recruiter.persistence.entity;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,7 +7,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Builder
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity

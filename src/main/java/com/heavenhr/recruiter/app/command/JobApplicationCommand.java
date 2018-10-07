@@ -9,15 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.modelmapper.ModelMapper;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "JobOfferCommand")
+@ApiModel(value = "JobApplicationCommand")
 public class JobApplicationCommand {
 
     @ApiModelProperty(value = "Candidate email (unique per job offer)", dataType = "string", required = true, example = "someone@example.com")
@@ -29,7 +28,7 @@ public class JobApplicationCommand {
     private String resumeText;
 
     @ApiModelProperty(value = "job offer id", dataType = "number", required = true, example = "1")
-    @NotBlank
+    @NotNull
     private Long jobOfferId;
 
     /**
@@ -42,11 +41,6 @@ public class JobApplicationCommand {
         ModelMapper modelMapper = new ModelMapper();
         JobApplication jobApplication = modelMapper.map(jobApplicationCommand, JobApplication.class);
         jobApplication.setApplicationStatus(ApplicationStatus.APPLIED);
-        jobApplication.setJobOffer(
-                JobOffer.builder()
-                        .id(jobApplicationCommand.jobOfferId)
-                        .build()
-        );
         return jobApplication;
     }
 }

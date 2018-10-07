@@ -13,6 +13,8 @@ public class JobAppStatusEventSub implements ApplicationListener<JobAppStatusCha
 
     @Override
     public void onApplicationEvent(JobAppStatusChangeEvent event) {
+        LOGGER.debug("*************************************************");
         LOGGER.debug("Status change event received: " + event.toString());
+        LOGGER.debug("*************************************************");
     }
 }

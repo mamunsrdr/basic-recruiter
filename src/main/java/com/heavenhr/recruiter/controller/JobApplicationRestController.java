@@ -4,7 +4,9 @@ import com.heavenhr.recruiter.app.command.JobApplicationCommand;
 import com.heavenhr.recruiter.app.dto.JobApplicationDto;
 import com.heavenhr.recruiter.app.type.ApplicationStatus;
 import com.heavenhr.recruiter.persistence.entity.JobApplication;
+import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import com.heavenhr.recruiter.service.application.JobApplicationService;
+import com.heavenhr.recruiter.service.offer.JobOfferService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,10 +31,13 @@ public class JobApplicationRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobApplicationRestController.class);
 
+    private final JobOfferService jobOfferService;
     private final JobApplicationService jobApplicationService;
 
     @Autowired
-    public JobApplicationRestController(JobApplicationService jobApplicationService) {
+    public JobApplicationRestController(JobOfferService jobOfferService,
+                                        JobApplicationService jobApplicationService) {
+        this.jobOfferService = jobOfferService;
         this.jobApplicationService = jobApplicationService;
     }
 
@@ -41,7 +46,7 @@ public class JobApplicationRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Retrieve job application details by id")
-    public ResponseEntity<JobApplicationDto> getJobApplication(@ApiParam("Job application id")
+    public ResponseEntity<JobApplicationDto> getJobApplication(@ApiParam(value = "Job application id", required = true)
                                                                @PathVariable("id") Long id) {
         JobApplication application = this.jobApplicationService.getJobApplicationById(id);
         if (application == null) {
@@ -55,11 +60,11 @@ public class JobApplicationRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Retrieve all job applications by job offer id")
-    public ResponseEntity<List<JobApplicationDto>> getAllJobApplicationByOffer(@ApiParam("Job offer id")
+    public ResponseEntity<List<JobApplicationDto>> getAllJobApplicationByOffer(@ApiParam(value = "Job offer id", required = true)
                                                                                @PathVariable("offerId") Long offerId) {
         List<JobApplication> jobApplications = this.jobApplicationService.getAllJobApplicationByOfferId(offerId);
         if (jobApplications.isEmpty()) {
-            ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(
                 jobApplications.stream()
@@ -73,7 +78,7 @@ public class JobApplicationRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Count number of job applications by job offer id")
-    public ResponseEntity<Long> countJobApplication(@ApiParam("Job offer id")
+    public ResponseEntity<Long> countJobApplication(@ApiParam(value = "Job offer id", required = true)
                                                     @PathVariable Long offerId) {
         Long count = this.jobApplicationService.countJobApplicationByOfferId(offerId);
         return ResponseEntity.ok().body(count);
@@ -87,7 +92,13 @@ public class JobApplicationRestController {
     public ResponseEntity createJobApplication(@Valid @RequestBody JobApplicationCommand jobApplicationCommand, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("create job application: " + jobApplicationCommand.toString());
 
+        //check if applied under valid offer
+        JobOffer jobOffer = this.jobOfferService.getJobOfferById(jobApplicationCommand.getJobOfferId());
+        if (jobOffer == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        }
         JobApplication jobApplication = JobApplicationCommand.convert(jobApplicationCommand);
+        jobApplication.setJobOffer(jobOffer);
 
         //check if already applied
         if (this.jobApplicationService.isCandidateApplied(jobApplication.getJobOffer().getId(), jobApplication.getCandidateEmail())) {
@@ -107,9 +118,9 @@ public class JobApplicationRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Update the progress of job application status")
-    public ResponseEntity updateJobApplicationStatus(@ApiParam("Job application id")
+    public ResponseEntity updateJobApplicationStatus(@ApiParam(value = "Job application id", required = true)
                                                      @PathVariable("applicationId") Long applicationId,
-                                                     @ApiParam("Application status - APPLIED, INVITED, REJECTED, HIRED")
+                                                     @ApiParam(value = "Application status - APPLIED, INVITED, REJECTED, HIRED", required = true)
                                                      @PathVariable("applicationStatus") ApplicationStatus applicationStatus) {
         JobApplication application = this.jobApplicationService.getJobApplicationById(applicationId);
         if (application == null) {
