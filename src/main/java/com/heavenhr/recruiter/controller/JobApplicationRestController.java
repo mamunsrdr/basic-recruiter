@@ -84,7 +84,9 @@ public class JobApplicationRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Create job applications under a job offer")
-    public ResponseEntity<Void> createJobApplication(@Valid @RequestBody JobApplicationCommand jobApplicationCommand, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity createJobApplication(@Valid @RequestBody JobApplicationCommand jobApplicationCommand, UriComponentsBuilder ucBuilder) {
+        LOGGER.debug("create job application: " + jobApplicationCommand.toString());
+
         JobApplication jobApplication = JobApplicationCommand.convert(jobApplicationCommand);
 
         //check if already applied
@@ -105,10 +107,10 @@ public class JobApplicationRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Update the progress of job application status")
-    public ResponseEntity<Void> updateJobApplicationStatus(@ApiParam("Job application id")
-                                                           @PathVariable("applicationId") Long applicationId,
-                                                           @ApiParam("Application status - APPLIED, INVITED, REJECTED, HIRED")
-                                                           @PathVariable("applicationStatus") ApplicationStatus applicationStatus) {
+    public ResponseEntity updateJobApplicationStatus(@ApiParam("Job application id")
+                                                     @PathVariable("applicationId") Long applicationId,
+                                                     @ApiParam("Application status - APPLIED, INVITED, REJECTED, HIRED")
+                                                     @PathVariable("applicationStatus") ApplicationStatus applicationStatus) {
         JobApplication application = this.jobApplicationService.getJobApplicationById(applicationId);
         if (application == null) {
             return ResponseEntity.notFound().build();

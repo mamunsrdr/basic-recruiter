@@ -75,7 +75,7 @@ public class JobOfferRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Create job offer")
-    public ResponseEntity<Void> createJobOffer(@Valid @RequestBody JobOfferCommand jobOfferCommand, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity createJobOffer(@Valid @RequestBody JobOfferCommand jobOfferCommand, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("create offer: " + jobOfferCommand.toString());
         JobOffer jobOffer = JobOfferCommand.convertToJobOfferEntity(jobOfferCommand);
 
