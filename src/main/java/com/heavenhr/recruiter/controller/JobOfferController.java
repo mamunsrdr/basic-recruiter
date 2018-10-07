@@ -10,27 +10,28 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/v1/offer")
 @Api(value = "Job Offer", description = "Job offer related api collection", tags = {"Job Offer"})
-public class JobOfferRestController {
+public class JobOfferController {
 
     private final JobOfferService jobOfferService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobOfferRestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobOfferController.class);
 
     @Autowired
-    public JobOfferRestController(JobOfferService jobOfferService) {
+    public JobOfferController(JobOfferService jobOfferService) {
         this.jobOfferService = jobOfferService;
     }
 
@@ -70,10 +71,7 @@ public class JobOfferRestController {
         );
     }
 
-    @PostMapping(
-            path = "/create",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping()
     @ApiOperation("Create job offer")
     public ResponseEntity createJobOffer(@Valid @RequestBody JobOfferCommand jobOfferCommand, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("create offer: " + jobOfferCommand.toString());
@@ -87,9 +85,10 @@ public class JobOfferRestController {
         //save job offer
         this.jobOfferService.createJobOffer(jobOffer);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(jobOffer.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        URI getUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(jobOffer.getId()).toUri();
+        return ResponseEntity.created(getUri).build();
     }
 
 

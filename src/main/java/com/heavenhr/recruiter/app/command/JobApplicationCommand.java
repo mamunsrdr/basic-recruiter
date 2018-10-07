@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,7 @@ public class JobApplicationCommand {
      */
     public static JobApplication convert(JobApplicationCommand jobApplicationCommand) {
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         JobApplication jobApplication = modelMapper.map(jobApplicationCommand, JobApplication.class);
         jobApplication.setApplicationStatus(ApplicationStatus.APPLIED);
         return jobApplication;

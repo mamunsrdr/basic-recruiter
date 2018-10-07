@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Api(value = "App", description = "App REST controller", tags = {"App"})
-public class AppRestController {
+public class AppController {
 
     private final MessageSourceAccessor messages;
 
     @Autowired
-    public AppRestController(MessageSourceAccessor messages) {
+    public AppController(MessageSourceAccessor messages) {
         this.messages = messages;
     }
 

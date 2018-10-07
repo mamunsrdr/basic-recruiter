@@ -1,16 +1,16 @@
 package com.heavenhr.recruiter.persistence.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
-public class JobOffer extends AuditModel {
+public class JobOffer {
 
     @Id
     @GeneratedValue

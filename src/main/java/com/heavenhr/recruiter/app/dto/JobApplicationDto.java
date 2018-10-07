@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 
 import java.time.LocalDate;
 
@@ -41,6 +42,7 @@ public class JobApplicationDto {
      */
     public static JobApplicationDto convert(JobApplication jobApplication) {
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         JobApplicationDto applicationDto = modelMapper.map(jobApplication, JobApplicationDto.class);
         applicationDto.setJobOfferId(jobApplication.getJobOffer().getId());
         return applicationDto;

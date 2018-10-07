@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.convention.MatchingStrategies;
 
 import java.time.LocalDate;
 
@@ -37,6 +38,7 @@ public class JobOfferDto {
      */
     public static JobOfferDto convert(JobOffer jobOffer) {
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper.map(jobOffer, JobOfferDto.class);
     }
 }

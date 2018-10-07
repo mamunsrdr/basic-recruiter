@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
@@ -36,6 +37,7 @@ public class JobOfferCommand {
      */
     public static JobOffer convertToJobOfferEntity(JobOfferCommand jobOfferCommand) {
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         JobOffer jobOffer = modelMapper.map(jobOfferCommand, JobOffer.class);
         jobOffer.setTotalApplication(0L);
         return jobOffer;

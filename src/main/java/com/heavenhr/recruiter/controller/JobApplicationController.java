@@ -13,30 +13,31 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/v1/application")
 @Api(value = "Job Application", description = "Job applications related api collection", tags = {"Job Application"})
-public class JobApplicationRestController {
+public class JobApplicationController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobApplicationRestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobApplicationController.class);
 
     private final JobOfferService jobOfferService;
     private final JobApplicationService jobApplicationService;
 
     @Autowired
-    public JobApplicationRestController(JobOfferService jobOfferService,
-                                        JobApplicationService jobApplicationService) {
+    public JobApplicationController(JobOfferService jobOfferService,
+                                    JobApplicationService jobApplicationService) {
         this.jobOfferService = jobOfferService;
         this.jobApplicationService = jobApplicationService;
     }
@@ -84,10 +85,7 @@ public class JobApplicationRestController {
         return ResponseEntity.ok().body(count);
     }
 
-    @PostMapping(
-            path = "/create",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping()
     @ApiOperation("Create job applications under a job offer")
     public ResponseEntity createJobApplication(@Valid @RequestBody JobApplicationCommand jobApplicationCommand, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("create job application: " + jobApplicationCommand.toString());
@@ -108,9 +106,10 @@ public class JobApplicationRestController {
         //save job application
         this.jobApplicationService.createJobApplication(jobApplication);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(jobApplication.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        URI getUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(jobApplication.getId()).toUri();
+        return ResponseEntity.created(getUri).build();
     }
 
     @PatchMapping(

@@ -1,17 +1,17 @@
 package com.heavenhr.recruiter.persistence.entity;
 
 import com.heavenhr.recruiter.app.type.ApplicationStatus;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
-public class JobApplication extends AuditModel {
+public class JobApplication {
 
     @Id
     @GeneratedValue
