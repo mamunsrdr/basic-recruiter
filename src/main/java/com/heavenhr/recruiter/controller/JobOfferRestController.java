@@ -39,7 +39,7 @@ public class JobOfferRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation("Retrieve job offer details by id")
-    public ResponseEntity<JobOfferDto> getJobOffer(@ApiParam("Job offer id")
+    public ResponseEntity<JobOfferDto> getJobOffer(@ApiParam(value = "Job offer id", required = true)
                                                    @PathVariable("id") Long offerId) {
         JobOffer jobOffer = this.jobOfferService.getJobOfferById(offerId);
 

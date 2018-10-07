@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
@@ -24,7 +25,7 @@ public class JobOfferCommand {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "Start date (format: yyyy-MM-dd)", dataType = "date", required = true, example = "2018-11-27")
-    @NotBlank
+    @NotNull
     private LocalDate startDate;
 
     /**
