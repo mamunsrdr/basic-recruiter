@@ -1,7 +1,8 @@
-package com.heavenhr.recruiter.controller;
+package com.heavenhr.recruiter.controller.api;
 
 import com.heavenhr.recruiter.app.command.JobApplicationCommand;
 import com.heavenhr.recruiter.app.dto.JobApplicationDto;
+import com.heavenhr.recruiter.app.error.ResourceException;
 import com.heavenhr.recruiter.app.type.ApplicationStatus;
 import com.heavenhr.recruiter.persistence.entity.JobApplication;
 import com.heavenhr.recruiter.persistence.entity.JobOffer;
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +34,15 @@ public class JobApplicationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobApplicationController.class);
 
+    private final MessageSourceAccessor messages;
     private final JobOfferService jobOfferService;
     private final JobApplicationService jobApplicationService;
 
     @Autowired
-    public JobApplicationController(JobOfferService jobOfferService,
+    public JobApplicationController(MessageSourceAccessor messages,
+                                    JobOfferService jobOfferService,
                                     JobApplicationService jobApplicationService) {
+        this.messages = messages;
         this.jobOfferService = jobOfferService;
         this.jobApplicationService = jobApplicationService;
     }
@@ -50,7 +56,7 @@ public class JobApplicationController {
                                                                @PathVariable("id") Long id) {
         JobApplication application = this.jobApplicationService.getJobApplicationById(id);
         if (application == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResourceException(HttpStatus.NOT_FOUND, messages.getMessage("resource.not.found", LocaleContextHolder.getLocale()));
         }
         return ResponseEntity.ok().body(JobApplicationDto.convert(application));
     }
@@ -93,13 +99,13 @@ public class JobApplicationController {
         JobApplication jobApplication = JobApplicationCommand.convert(jobApplicationCommand);
         JobOffer jobOffer = this.jobOfferService.getJobOfferById(jobApplication.getJobOffer().getId());
         if (jobOffer == null) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+            throw new ResourceException(HttpStatus.UNPROCESSABLE_ENTITY, messages.getMessage("offer.not.found", LocaleContextHolder.getLocale()));
         }
         jobApplication.setJobOffer(jobOffer);
 
         //check if already applied
         if (this.jobApplicationService.isCandidateApplied(jobApplication.getJobOffer().getId(), jobApplication.getCandidateEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new ResourceException(HttpStatus.CONFLICT, messages.getMessage("application.exists", LocaleContextHolder.getLocale()));
         }
 
         //save job application
@@ -122,9 +128,7 @@ public class JobApplicationController {
                                                      @PathVariable("applicationStatus") ApplicationStatus applicationStatus) {
         JobApplication application = this.jobApplicationService.getJobApplicationById(applicationId);
         if (application == null) {
-            return ResponseEntity.notFound().build();
-        } else if (applicationStatus == null) {
-            return ResponseEntity.badRequest().build();
+            throw new ResourceException(HttpStatus.NOT_FOUND, messages.getMessage("resource.not.found", LocaleContextHolder.getLocale()));
         }
         this.jobApplicationService.updateJobApplicationStatus(application, applicationStatus);
         return ResponseEntity.ok().build();

@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public class ResourceException extends RuntimeException {
 
+    private static final long serialVersionUID = 1322351863588068616L;
+
     private HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
     public HttpStatus getHttpStatus() {

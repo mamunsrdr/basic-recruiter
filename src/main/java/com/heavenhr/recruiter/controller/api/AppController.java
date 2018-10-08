@@ -1,4 +1,4 @@
-package com.heavenhr.recruiter.controller;
+package com.heavenhr.recruiter.controller.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

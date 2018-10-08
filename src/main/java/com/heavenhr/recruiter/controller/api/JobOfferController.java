@@ -1,7 +1,8 @@
-package com.heavenhr.recruiter.controller;
+package com.heavenhr.recruiter.controller.api;
 
 import com.heavenhr.recruiter.app.command.JobOfferCommand;
 import com.heavenhr.recruiter.app.dto.JobOfferDto;
+import com.heavenhr.recruiter.app.error.ResourceException;
 import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import com.heavenhr.recruiter.service.offer.JobOfferService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +29,14 @@ import java.util.stream.Collectors;
 @Api(value = "Job Offer", description = "Job offer related api collection", tags = {"Job Offer"})
 public class JobOfferController {
 
+    private final MessageSourceAccessor messages;
     private final JobOfferService jobOfferService;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobOfferController.class);
 
     @Autowired
-    public JobOfferController(JobOfferService jobOfferService) {
+    public JobOfferController(MessageSourceAccessor messages,
+                              JobOfferService jobOfferService) {
+        this.messages = messages;
         this.jobOfferService = jobOfferService;
     }
 
@@ -45,7 +51,7 @@ public class JobOfferController {
 
         //if no entity found with provided id
         if (jobOffer == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResourceException(HttpStatus.NOT_FOUND, messages.getMessage("resource.not.found", LocaleContextHolder.getLocale()));
         } else {
             return ResponseEntity.ok().body(JobOfferDto.convert(jobOffer));
         }
@@ -78,7 +84,7 @@ public class JobOfferController {
 
         //title unique check
         if (this.jobOfferService.isTitleExists(jobOffer.getJobTitle())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new ResourceException(HttpStatus.CONFLICT, messages.getMessage("offer.title.exists", LocaleContextHolder.getLocale()));
         }
 
         //save job offer

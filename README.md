@@ -12,8 +12,11 @@ com.heavenhr.recruiter
         command
         config
         dto
+        error
         type
     - controller
+        advice
+        api
     - event
         publisher
         subscriber
