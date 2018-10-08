@@ -90,11 +90,11 @@ public class JobApplicationController {
         LOGGER.debug("create job application: " + jobApplicationCommand.toString());
 
         //check if applied under valid offer
-        JobOffer jobOffer = this.jobOfferService.getJobOfferById(jobApplicationCommand.getJobOfferId());
+        JobApplication jobApplication = JobApplicationCommand.convert(jobApplicationCommand);
+        JobOffer jobOffer = this.jobOfferService.getJobOfferById(jobApplication.getJobOffer().getId());
         if (jobOffer == null) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
-        JobApplication jobApplication = JobApplicationCommand.convert(jobApplicationCommand);
         jobApplication.setJobOffer(jobOffer);
 
         //check if already applied

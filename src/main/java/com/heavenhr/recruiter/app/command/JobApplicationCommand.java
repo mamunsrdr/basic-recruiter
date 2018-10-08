@@ -43,6 +43,7 @@ public class JobApplicationCommand {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         JobApplication jobApplication = modelMapper.map(jobApplicationCommand, JobApplication.class);
+        jobApplication.setJobOffer(JobOffer.builder().id(jobApplicationCommand.getJobOfferId()).build());
         jobApplication.setApplicationStatus(ApplicationStatus.APPLIED);
         return jobApplication;
     }

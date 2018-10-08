@@ -6,8 +6,7 @@ import com.heavenhr.recruiter.persistence.entity.JobApplication;
 import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
@@ -15,6 +14,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "JobApplicationDto")
 public class JobApplicationDto {
 
