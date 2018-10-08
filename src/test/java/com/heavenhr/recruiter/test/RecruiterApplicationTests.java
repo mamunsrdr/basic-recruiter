@@ -1,4 +1,4 @@
-package com.heavenhr.recruiter;
+package com.heavenhr.recruiter.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
