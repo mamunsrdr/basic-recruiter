@@ -1,10 +1,6 @@
 package com.heavenhr.recruiter.test.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.heavenhr.recruiter.app.command.JobApplicationCommand;
-import com.heavenhr.recruiter.app.command.JobOfferCommand;
-import com.heavenhr.recruiter.app.type.ApplicationStatus;
-import com.heavenhr.recruiter.persistence.entity.JobApplication;
 import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import com.heavenhr.recruiter.service.offer.JobOfferService;
 import org.junit.Before;
@@ -27,8 +23,10 @@ import java.util.Map;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringRunner.class)

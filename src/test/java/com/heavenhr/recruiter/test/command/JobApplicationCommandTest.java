@@ -1,17 +1,16 @@
 package com.heavenhr.recruiter.test.command;
 
 import com.heavenhr.recruiter.app.command.JobApplicationCommand;
-import com.heavenhr.recruiter.app.dto.JobApplicationDto;
 import com.heavenhr.recruiter.app.type.ApplicationStatus;
 import com.heavenhr.recruiter.persistence.entity.JobApplication;
-import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
