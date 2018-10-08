@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobApplication {
+public class JobApplication extends AuditModel {
 
     @Id
     @GeneratedValue

@@ -3,9 +3,7 @@ package com.heavenhr.recruiter.app.command;
 import com.heavenhr.recruiter.persistence.entity.JobOffer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +14,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @ApiModel(value = "JobOfferCommand")
 public class JobOfferCommand {

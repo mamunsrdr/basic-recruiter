@@ -73,7 +73,7 @@ public class JobOfferController {
 
     @PostMapping()
     @ApiOperation("Create job offer")
-    public ResponseEntity createJobOffer(@Valid @RequestBody JobOfferCommand jobOfferCommand, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity createJobOffer(@Valid @RequestBody JobOfferCommand jobOfferCommand) {
         LOGGER.debug("create offer: " + jobOfferCommand.toString());
         JobOffer jobOffer = JobOfferCommand.convertToJobOfferEntity(jobOfferCommand);
 

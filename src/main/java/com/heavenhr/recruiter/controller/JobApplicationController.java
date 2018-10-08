@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -87,7 +86,7 @@ public class JobApplicationController {
 
     @PostMapping()
     @ApiOperation("Create job applications under a job offer")
-    public ResponseEntity createJobApplication(@Valid @RequestBody JobApplicationCommand jobApplicationCommand, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity createJobApplication(@Valid @RequestBody JobApplicationCommand jobApplicationCommand) {
         LOGGER.debug("create job application: " + jobApplicationCommand.toString());
 
         //check if applied under valid offer
@@ -119,7 +118,7 @@ public class JobApplicationController {
     @ApiOperation("Update the progress of job application status")
     public ResponseEntity updateJobApplicationStatus(@ApiParam(value = "Job application id", required = true)
                                                      @PathVariable("applicationId") Long applicationId,
-                                                     @ApiParam(value = "Application status - APPLIED, INVITED, REJECTED, HIRED", required = true)
+                                                     @ApiParam(value = "Application status", required = true)
                                                      @PathVariable("applicationStatus") ApplicationStatus applicationStatus) {
         JobApplication application = this.jobApplicationService.getJobApplicationById(applicationId);
         if (application == null) {

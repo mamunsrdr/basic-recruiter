@@ -12,7 +12,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobOffer {
+public class JobOffer extends AuditModel {
 
     @Id
     @GeneratedValue
