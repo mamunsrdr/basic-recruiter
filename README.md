@@ -24,11 +24,19 @@ com.heavenhr.recruiter
     - service
 ```
 ### Sample commands
-**Clean:** `./gradlew build`  
-**Build:** `./gradlew build`    
-**Test:** `./gradlew test`  
-**Run:** `./gradlew bootRun`    
+```
+//to clean
+# ./gradlew clean
 
+//to build
+# ./gradlew build    
+
+//to test
+# ./gradlew test
+
+//to run the app  
+# ./gradlew bootRun     
+```
 
 ### Play with REST api
 With **Swagger-UI** (after run): [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)  
